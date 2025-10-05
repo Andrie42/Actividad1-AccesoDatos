@@ -17,7 +17,7 @@ public class Operaciones {
     Pedido pedido3 = new Pedido(3, 2, "Par calcetines", 3);
     Pedido pedidoLectura;
     Pedido[] pedidos = {pedido1, pedido2, pedido3};
-    int opcionClase;
+    String opcionClase;
 
 
     public void mostrarMenu() {
@@ -25,8 +25,8 @@ public class Operaciones {
         System.out.println("¿Con qué quieres trabajar?");
         System.out.println("1. Clientes");
         System.out.println("2. Pedidos");
-        opcionClase = sc.nextInt();
-        if (opcionClase != 1 & opcionClase != 2) {
+        opcionClase = sc.next();
+        if (!opcionClase.equals("1") & !opcionClase.equals("2")) {
             System.out.println("Opción incorrecta.");
             mostrarMenu();
         }
@@ -46,13 +46,13 @@ public class Operaciones {
             pw = new PrintWriter(file);
 
 
-            if (opcionClase == 1) {
+            if (opcionClase.equals("1")) {
                 //Exportar clientes
                 pw.println("id,nombre,correo");
                 for (Cliente c : clientes) {
                     pw.println(c.toString());
                 }
-            } else if (opcionClase == 2) {
+            } else if (opcionClase.equals("2")) {
                 //exportar pedidos
                 pw.println("id,clienteId,producto,cantidad");
                 for (Pedido p : pedidos) {
@@ -90,12 +90,12 @@ public class Operaciones {
         try {
             oos = new ObjectOutputStream(new FileOutputStream(file));
 
-            if (opcionClase == 1) {
+            if (opcionClase.equals("1")) {
                 // Escribir cliente
                 for (Cliente cliente : clientes) {
                     oos.writeObject(cliente);
                 }
-            } else if (opcionClase == 2) {
+            } else if (opcionClase.equals("2")) {
                 // Escribir pedido
                 for (Pedido pedido : pedidos) {
                     oos.writeObject(pedido);
@@ -125,7 +125,7 @@ public class Operaciones {
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
 
-            if (opcionClase == 1) {
+            if (opcionClase.equals("1")) {
                 //Leer clientes
                 while ((clienteLectura = (Cliente) ois.readObject()) != null) {
                     ArrayList<Cliente> clientesLectura = new ArrayList<>();
@@ -134,7 +134,7 @@ public class Operaciones {
                         System.out.println(cliente.toString());
                     }
                 }
-            } else if (opcionClase == 2) {
+            } else if (opcionClase.equals("2")) {
                 //Leer pedido
                 while ((pedidoLectura = (Pedido) ois.readObject()) != null) {
                     ArrayList<Pedido> pedidosLectura = new ArrayList<>();
