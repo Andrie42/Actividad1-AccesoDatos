@@ -3,6 +3,7 @@ import model.Pedido;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Operaciones {
     Cliente cliente1 = new Cliente(1, "Laura", "laura@gmail.com");
@@ -16,7 +17,21 @@ public class Operaciones {
     Pedido pedido3 = new Pedido(3, 2, "Par calcetines", 3);
     Pedido pedidoLectura;
     Pedido[] pedidos = {pedido1, pedido2, pedido3};
+    int opcionClase;
 
+
+    public void mostrarMenu() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("¿Con qué quieres trabajar?");
+        System.out.println("1. Clientes");
+        System.out.println("2. Pedidos");
+        opcionClase = sc.nextInt();
+        if (opcionClase != 1 & opcionClase != 2) {
+            System.out.println("Opción incorrecta.");
+            mostrarMenu();
+        }
+
+    }
 
     public void exportarObjetosFichero(String path) {
 
@@ -30,17 +45,24 @@ public class Operaciones {
 
             pw = new PrintWriter(file);
 
-            //Exportar clientes
-//            pw.println("id,nombre,correo");
-//            for (Cliente c : clientes) {
-//                pw.println(c.toString());
-//            }
 
-            //exportar pedidos
-            pw.println("id,clienteId,producto,cantidad");
-            for(Pedido p : pedidos){
-                pw.println(p.toString());
+            if (opcionClase == 1) {
+                //Exportar clientes
+                pw.println("id,nombre,correo");
+                for (Cliente c : clientes) {
+                    pw.println(c.toString());
+                }
+            } else if (opcionClase == 2) {
+                //exportar pedidos
+                pw.println("id,clienteId,producto,cantidad");
+                for (Pedido p : pedidos) {
+                    pw.println(p.toString());
+                }
+            } else {
+                System.out.println("Opción incorrecta");
+                mostrarMenu();
             }
+
 
         } catch (IOException e) {
             System.out.println("Error al crear el archivo");
@@ -68,14 +90,19 @@ public class Operaciones {
         try {
             oos = new ObjectOutputStream(new FileOutputStream(file));
 
-            // Escribir cliente
-//            for (Cliente cliente : clientes) {
-//                oos.writeObject(cliente);
-//            }
-
-            // Escribir pedido
-            for (Pedido pedido : pedidos) {
-                oos.writeObject(pedido);
+            if (opcionClase == 1) {
+                // Escribir cliente
+                for (Cliente cliente : clientes) {
+                    oos.writeObject(cliente);
+                }
+            } else if (opcionClase == 2) {
+                // Escribir pedido
+                for (Pedido pedido : pedidos) {
+                    oos.writeObject(pedido);
+                }
+            } else {
+                System.out.print("Opción no valida");
+                mostrarMenu();
             }
 
         } catch (FileNotFoundException e) {
@@ -98,22 +125,27 @@ public class Operaciones {
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
 
-            //Leer clientes
-//            while ((clienteLectura = (Cliente) ois.readObject()) != null) {
-//                ArrayList<Cliente> clientesLectura = new ArrayList<>();
-//                clientesLectura.add(clienteLectura);
-//                for (Cliente cliente : clientesLectura) {
-//                    System.out.println(cliente.toString());
-//                }
-//            }
-
-            //Leer pedido
-            while ((pedidoLectura = (Pedido) ois.readObject()) != null){
-                ArrayList<Pedido> pedidosLectura = new ArrayList<>();
-                pedidosLectura.add(pedidoLectura);
-                for (Pedido pedido : pedidosLectura) {
-                    System.out.println(pedido.toString());
+            if (opcionClase == 1) {
+                //Leer clientes
+                while ((clienteLectura = (Cliente) ois.readObject()) != null) {
+                    ArrayList<Cliente> clientesLectura = new ArrayList<>();
+                    clientesLectura.add(clienteLectura);
+                    for (Cliente cliente : clientesLectura) {
+                        System.out.println(cliente.toString());
+                    }
                 }
+            } else if (opcionClase == 2) {
+                //Leer pedido
+                while ((pedidoLectura = (Pedido) ois.readObject()) != null) {
+                    ArrayList<Pedido> pedidosLectura = new ArrayList<>();
+                    pedidosLectura.add(pedidoLectura);
+                    for (Pedido pedido : pedidosLectura) {
+                        System.out.println(pedido.toString());
+                    }
+                }
+            } else {
+                System.out.println("Opción incorrecta");
+                mostrarMenu();
             }
 
         } catch (FileNotFoundException e) {
